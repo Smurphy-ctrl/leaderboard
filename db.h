@@ -10,7 +10,7 @@ typedef struct{
     char name[50];
     int score;
 } Player;
-
+//Function prototypes
 void db_open(void);
 void db_close(void);
 void db_add_score(const char *name, int score);

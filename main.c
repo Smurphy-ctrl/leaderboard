@@ -2,9 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include "db.h"
+//Main function with menu
 int main(void){
 db_open();
-
+    //Menu loop
     int choice;
     do {
         printf("====Welcome to my database menu!====\n");
@@ -18,6 +19,7 @@ db_open();
         fgets(input, sizeof(input), stdin);
         choice = atoi(input);
         switch(choice){
+            //Add new score
         case 1: {
             char input_name[50];
             int input_score;
@@ -27,7 +29,8 @@ db_open();
             printf("Enter player score: ");
             fgets(input, sizeof(input), stdin);
             input_score = atoi(input);
-            if(input_score <0){
+            //Checks for valid input
+            if(input_score < 0){
                 printf("Score cannot be negative!\n");
             }
             else{
@@ -35,6 +38,7 @@ db_open();
             }
             break;
         }
+        //View top n players
         case 2:{
             int n;
             printf("Enter number of top players to view: ");
@@ -43,6 +47,7 @@ db_open();
             db_view_top(n);
             break;
         }
+        //Delete a player by id
         case 3:{
             char id_input[10];
             int del_id;
@@ -53,10 +58,12 @@ db_open();
             db_delete_player(del_id);
             break;
         }
+        //Reset leaderboard with confirmation
         case 4:{
             db_reset();
             break;
         }
+        //Exit
         case 0:{
             printf("Goodbye!\n");
             break;
@@ -67,7 +74,7 @@ db_open();
         }
     }
     } while (choice != 0);
-    
+    //Close database connection before exiting
     db_close();
     return 0;
 }

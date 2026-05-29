@@ -2,7 +2,7 @@
 #include "db.h"
 
 sqlite3 *db;
-
+//Open the database and create the leaderboard table if it doesn't exist
 void db_open(void){
     if (sqlite3_open("leaderboard.db", &db) != SQLITE_OK){
         printf("Error! Database not found: %s\n", sqlite3_errmsg(db));
@@ -54,6 +54,7 @@ void db_add_score(const char *name, int score){
     //finalizing.
     sqlite3_finalize(stmt);
 }
+//View top n players in the leaderboard
 void  db_view_top(int n){
     sqlite3_stmt *stmt;
     sqlite3_prepare_v2(db, "SELECT id, name, score FROM leaderboard ORDER BY score DESC LIMIT ?;", -1, &stmt, 0);
@@ -73,6 +74,7 @@ void  db_view_top(int n){
     printf("+-----+------+-----------------+---------+\n");
     sqlite3_finalize(stmt);
 }
+//delete player by id, with confirmation
 void db_delete_player(int id){
     printf("Are you sure you want to delete player with ID %d? (y/n): ", id);
     char input[10];
@@ -81,6 +83,7 @@ void db_delete_player(int id){
         printf("Deletion cancelled.\n");
         return;
     }
+    //Delete player
     sqlite3_stmt *stmt;
     if(sqlite3_prepare_v2(db, "DELETE FROM leaderboard WHERE id = ?;", -1, &stmt, 0) == SQLITE_OK){
         sqlite3_bind_int(stmt, 1, id);
